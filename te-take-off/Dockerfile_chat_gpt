@@ -1,0 +1,39 @@
+FROM rust:1.67
+
+WORKDIR /app
+
+Initialize a Rust project
+RUN cargo init
+
+Copy the project's Cargo.toml file
+COPY Cargo.toml /app/Cargo.toml
+
+Fetch the dependencies
+RUN cargo fetch
+
+Install required packages for building the project
+RUN apt-get update && apt-get install -y lld clang pkg-config
+
+Copy the rest of the project files
+COPY . /app
+
+Clean previous builds
+RUN cargo clean
+
+Install sqlx-cli tool
+RUN cargo install sqlx-cli
+
+Prepare database for migrations
+RUN cargo sqlx prepare --database-url=postgres://postgres:password@172.17.0.2:5432/postgres?sslmode=disable
+
+Set the database URL environment variable
+ENV DATABASE_URL=postgres://postgres:password@172.17.0.2:5432/postgres?sslmode=disable
+
+Build the project in release mode and offline
+RUN cargo build --release --offline
+
+Expose the port for the application
+EXPOSE 8000
+
+Set the entrypoint for the container
+ENTRYPOINT ["./target/release/te-take-off"]

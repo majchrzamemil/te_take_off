@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS te_take_off.users (
     verified bool NOT NULL DEFAULT FALSE
 );
 
-CREATE TYPE opinion_type AS ENUM (
+CREATE TYPE te_take_off.opinion_type AS ENUM (
     'drunk',
     'late',
     'abusive'
