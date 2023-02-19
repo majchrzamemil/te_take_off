@@ -1,4 +1,5 @@
 mod endpoints;
+mod errors;
 mod repository;
 
 use rocket::routes;
@@ -16,7 +17,16 @@ async fn main() -> Result<(), rocket::Error> {
         .max_connections(20)
         .connect(&database_url)
         .await
-        .unwrap();
+        .map_err(|e| {
+            eprintln!("Error while creating db pool: {}", e);
+            std::process::exit(-1);
+        })
+        .unwrap(); //This will never error out on unwrap so I am going to leave it like this
+
+    match sqlx::migrate!().run(&db).await {
+        Ok(_) => println!("Migrated successfully"),
+        Err(e) => eprintln!("Migration failed, reason: {}", e),
+    }
 
     let repository = Repository::new(&db);
     let _rocket = rocket::build()
