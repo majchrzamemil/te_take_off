@@ -1,0 +1,71 @@
+{
+  "db": "PostgreSQL",
+  "300079600798b6ceed02f4a50255466661699173df6c053e8e22fca40a88c2b6": {
+    "describe": {
+      "columns": [
+        {
+          "name": "nr_tel",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "opinion_category:OpinionType",
+          "ordinal": 1,
+          "type_info": {
+            "Custom": {
+              "kind": {
+                "Enum": [
+                  "drunk",
+                  "late",
+                  "abusive"
+                ]
+              },
+              "name": "opinion_type"
+            }
+          }
+        },
+        {
+          "name": "custom_opinion",
+          "ordinal": 2,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      }
+    },
+    "query": "SELECT nr_tel, opinion_category as \"opinion_category:OpinionType\", custom_opinion FROM te_take_off.opinions where opinions.nr_tel = $1"
+  },
+  "8e3d070bed2ec2d5bd42aaaaa10e1d55bf30da3a1914c1e96520e56c378b4267": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          {
+            "Custom": {
+              "kind": {
+                "Enum": [
+                  "drunk",
+                  "late",
+                  "abusive"
+                ]
+              },
+              "name": "opinion_type"
+            }
+          },
+          "Text"
+        ]
+      }
+    },
+    "query": "INSERT INTO te_take_off.opinions (nr_tel, opinion_category, custom_opinion) VALUES ($1, $2, $3)"
+  }
+}
