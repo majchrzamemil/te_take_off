@@ -7,7 +7,7 @@ services:
     networks:
       - server-side
     ports:
-      - 5432:5432
+      - 8015:5432
     volumes:
       - progres_data:/data/postgres
     env_file:

@@ -29,6 +29,7 @@ async fn main() -> Result<(), rocket::Error> {
     }
 
     let repository = Repository::new(&db);
+    println!("dupa");
     let _rocket = rocket::build()
         .mount("/", routes![index, add_opinion, get_opinions])
         .manage(repository)

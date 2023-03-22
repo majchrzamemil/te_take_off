@@ -11,7 +11,7 @@ RUN cargo install sqlx-cli
 ENV DATABASE_URL=postgres://postgres:password@172.17.0.2:5432/postgres?sslmode=disable
 # ENV SQLX_OFFLINE true
 # CMD ["sqlx", "migrate", "run", "databae-url", "postgres://poestgres:password@172.17.0.2:5432/postgres"]
-RUN env DATABASE_URL=postgres://postgres:password@172.17.0.2:5432/postgres?sslmode=disable cargo build --release 
+RUN cargo build --release 
+# RUN cargo run --release 
 EXPOSE 8000
-# RUN cargo run --release -
 ENTRYPOINT ["./target/release/te-take-off"]
