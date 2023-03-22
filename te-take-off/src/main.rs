@@ -1,6 +1,8 @@
 mod endpoints;
 mod errors;
 mod repository;
+mod request;
+mod session;
 
 use rocket::routes;
 use sqlx::postgres::PgPoolOptions;
@@ -30,7 +32,19 @@ async fn main() -> Result<(), rocket::Error> {
 
     let repository = Repository::new(&db);
     let _rocket = rocket::build()
-        .mount("/", routes![index, add_opinion, get_opinions])
+        .mount(
+            "/",
+            routes![
+                index,
+                add_opinion,
+                get_opinions,
+                username_form,
+                login_chooser,
+                login_password,
+                registration_form,
+                register
+            ],
+        )
         .manage(repository)
         .launch()
         .await?;
