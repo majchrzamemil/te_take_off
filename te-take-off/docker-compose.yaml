@@ -1,34 +1,38 @@
-version: '2.15.1'
+name: te-take-off
 services:
-  postgres:
-    image: postgres:14.6
+  backend:
+    build:
+      target: development
+    environment:
+      - ADDRESS=127.72.0.1:8000
+      - RUST_LOG=debug
+      - PG_DBNAME=postgres
+      - PG_HOST=db
+      - PG_USER=postgres
+      - PG_PASSWORD=password
+      - DATABASE_URL=postgres://postgres:password@0.0.0.0:8015/
+    networks:
+      - server-side
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12-alpine
     restart: always
-    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=password
     networks:
       - server-side
     ports:
       - 8015:5432
     volumes:
-      - progres_data:/data/postgres
-    env_file:
-      - .env
-
-  backend:
-    depends_on:
-      - postgres
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8000:8000
-    networks:
-      - server-side
-    env_file:
-      - .env
-
-volumes:
-  progres_data:
+      - db-data:/var/lib/postgresql/data
 
 networks:
-  server-side:
-    driver: bridge
+  server-side: {}
+
+volumes:
+  backend-cache: {}
+  db-data: {}
