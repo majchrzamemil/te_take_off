@@ -1,0 +1,8 @@
+services:
+  backend:
+    build:
+      dockerfile: ./Dockerfile
+    environment:
+      - DATABASE_URL=postgres://postgres:password@localhost:8015/
+    network_mode: host
+
